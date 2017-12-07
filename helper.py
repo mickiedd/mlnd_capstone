@@ -5,7 +5,7 @@ from tqdm import tqdm
 from keras.applications.inception_v3 import InceptionV3
 from keras.callbacks import Callback
 from keras.models import Model
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop, Adam
 import random
 import pandas as pd
 from pandas import Series, DataFrame
@@ -20,12 +20,12 @@ from keras.layers import GlobalAveragePooling2D
 from keras.applications.xception import Xception
 from keras.callbacks import EarlyStopping
 
-prefix = '../input/dogsvscats/'
-train_path = '../input/train/'
-test_path = '../input/test/'
+prefix = '../../course/input/dogsvscats/'
+train_path = '../../course/input/train/'
+test_path = '../../course/input/test/'
 n_class = 1
 width = 299
-lr = 1e-6
+lr = 1e-4
 loss_function = 'binary_crossentropy'
 last_activate = 'sigmoid'
 input_shape = (width, width, 3)
