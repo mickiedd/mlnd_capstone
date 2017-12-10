@@ -24,7 +24,7 @@ prefix = '../../course/input/dogsvscats/'
 train_path = '../../course/input/train/'
 test_path = '../../course/input/test/'
 n_class = 1
-width = 299
+width = 229
 lr = 1e-4
 loss_function = 'binary_crossentropy'
 last_activate = 'sigmoid'
@@ -33,7 +33,7 @@ np.random.seed(12)
 
 images_path = os.listdir(train_path)
 n = len(images_path)
-#images_path = images_path[:500] + images_path[n - 500:n]
+#images_path = images_path[:2000] + images_path[n - 2000:n]
 n = len(images_path)
 X = np.zeros((n, width, width, 3), dtype=np.uint8)
 y = np.zeros((n, n_class), dtype=np.uint8)
