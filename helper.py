@@ -2,16 +2,16 @@ import cv2
 import numpy as np
 import os
 from tqdm import tqdm
-from keras.applications.inception_v3 import InceptionV3
-from keras.callbacks import Callback
-from keras.models import Model
-from keras.optimizers import RMSprop, Adam
 import random
 import pandas as pd
 from pandas import Series, DataFrame
 from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
 import seaborn as sns
+from keras.applications.inception_v3 import InceptionV3
+from keras.callbacks import Callback
+from keras.models import Model
+from keras.optimizers import RMSprop, Adam
 from keras.models import Sequential
 from keras.layers import Input, Dropout, Flatten, Conv2D, MaxPooling2D, Dense, Activation, Convolution2D
 from keras.layers.core import Lambda
@@ -24,7 +24,7 @@ prefix = '../../course/input/dogsvscats/'
 train_path = '../../course/input/train/'
 test_path = '../../course/input/test/'
 n_class = 1
-width = 229
+width = 224
 lr = 1e-4
 loss_function = 'binary_crossentropy'
 last_activate = 'sigmoid'
@@ -65,8 +65,9 @@ def plotPredictions(X, y_pred):
             print('I am {:.2%} sure this is a Dog'.format(y_pred[random_index][0]))
         else: 
             print('I am {:.2%} sure this is a Cat'.format(1-y_pred[random_index][0]))
-
-        plt.imshow(X[random_index][:,:,::-1])
+        img_path = test_path + '%s.jpg' % (random_index + 1)
+        img = cv2.imread(img_path)
+        plt.imshow(img[:,:,::-1])
         plt.show()
 def plotLossAndAccuracy(history):
     plt.figure(figsize=(10, 4))
@@ -87,9 +88,11 @@ def predictOnTestSet(model):
     df2 = pd.read_csv(prefix + 'sample_submission.csv')
     n_test = len(df2)
     X_test = np.zeros((n_test, width, width, 3), dtype=np.uint8)
+    print('n_test', n_test, X_test.shape)
     for i in tqdm(range(n_test)):
         img_path = test_path + '%s.jpg' % df2['id'][i]
         X_test[i] = cv2.resize(cv2.imread(img_path), (width, width))
+    X_test = preprocess_input(X_test.astype(np.float32), mode='tf')
     y_pred = model.predict(X_test, batch_size=32)
     return X_test, y_pred
 def getDistribution(data):
