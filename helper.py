@@ -88,11 +88,11 @@ def predictOnTestSet(model):
     df2 = pd.read_csv(prefix + 'sample_submission.csv')
     n_test = len(df2)
     X_test = np.zeros((n_test, width, width, 3), dtype=np.uint8)
-    print('n_test', n_test, X_test.shape)
+    #print('n_test', n_test, X_test.shape)
     for i in tqdm(range(n_test)):
         img_path = test_path + '%s.jpg' % df2['id'][i]
         X_test[i] = cv2.resize(cv2.imread(img_path), (width, width))
-    X_test = preprocess_input(X_test.astype(np.float32), mode='tf')
+    X_test = preprocess_input(X_test, mode='tf')
     y_pred = model.predict(X_test, batch_size=32)
     return X_test, y_pred
 def getDistribution(data):
